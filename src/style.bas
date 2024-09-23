@@ -1,15 +1,17 @@
 Attribute VB_Name = "style"
 Sub stylefrmMain(frm As UserForm)
     '#ced4da
-    frm.BackColor = converterRGBForVBA("#CED4DA")
+    frm.BackColor = converterRGBForVBA("#F7F8F9")
     
-    frm.Controls("frameMain").BackColor = converterRGBForVBA("#A5B0BB")
+    frm.Controls("frameMain").BackColor = vbWhite
     frm.Controls("lblStatusProcess").BackStyle = fmBackStyleTransparent
     
-    With frm.Controls("Label1")
-        .BackStyle = fmBackStyleTransparent
-        .Font.Bold = True
-    End With
+    For i = 1 To 5
+        With frm.Controls("Label" & i)
+            .BackStyle = fmBackStyleTransparent
+            .Font.Bold = True
+        End With
+    Next i
     
     With frm.Controls("Label2")
         .BackStyle = fmBackStyleTransparent
@@ -29,9 +31,7 @@ Sub stylefrmMain(frm As UserForm)
     End With
     
     With frm.Controls("btnGenerateExcel")
-        .BackColor = converterRGBForVBA("#CED4DA")
+        .BackColor = vbWhite
     End With
-    
-    
     
 End Sub

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmMain 
    Caption         =   "UserForm1"
-   ClientHeight    =   4935
+   ClientHeight    =   5835
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   6180
+   ClientWidth     =   5445
    OleObjectBlob   =   "frmMain.frx":0000
    StartUpPosition =   1  'Centrar en propietario
 End
@@ -34,6 +34,18 @@ Private Sub btnGenerateExcel_Click()
     
     If fso.FileExists(ddbbStock) And fso.FileExists(ddbbShitmenpLine) Then
     
+        If Not ddbbStock Like "*GeneralStockList*" Then
+            MsgBox "El primer archivo debe ser el GeneralStockList", vbInformation, "Archivo incorrecto"
+            txtPathExcelStock.SetFocus
+            Exit Sub
+        End If
+        
+        If Not ddbbShitmenpLine Like "*ShipmentLine*" Then
+            MsgBox "El segundo archivo debe ser el ShipmentLine", vbInformation, "Archivo incorrecto"
+            txtPathExcelShipmentLine.SetFocus
+            Exit Sub
+        End If
+    
         lblStatusProcess.Caption = "Espere estoy generando la lista"
         Application.Wait Now() + TimeValue("00:00:01")
         Call Index.main(ddbbStock, ddbbShitmenpLine)
@@ -56,10 +68,11 @@ Private Sub UserForm_Initialize()
     Me.Caption = "Generar lista de licuado"
     Me.frameMain.Caption = Empty
     Me.lblStatusProcess.Caption = Now()
-    Me.btnExplorer1.ControlTipText = "Buscar archivo"
-    Me.btnExplorer2.ControlTipText = "Buscar archivo"
+    
+    txtPathExcelShipmentLine.Locked = True
+    txtPathExcelStock.Locked = True
     
     Call style.stylefrmMain(Me)
     Call utils.addNewSheet
-    
+
 End Sub
