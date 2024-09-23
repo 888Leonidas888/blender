@@ -15,6 +15,7 @@ Private Type fields
     LPN As String
     amount As Integer
     ubication As String
+    vto As Date
 End Type
 
 Private self As fields
@@ -68,6 +69,13 @@ End Property
 
 Public Property Let ubication(ByVal value As String)
     self.ubication = value
+End Property
+
+Public Property Let vto(ByVal value As Date)
+    self.vto = value
+End Property
+Public Property Get vto() As Date
+    vto = self.vto
 End Property
 
 Public Property Get channel() As String

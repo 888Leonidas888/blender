@@ -4,8 +4,7 @@ Sub stylefrmMain(frm As UserForm)
     frm.BackColor = converterRGBForVBA("#F7F8F9")
     
     frm.Controls("frameMain").BackColor = vbWhite
-    frm.Controls("lblStatusProcess").BackStyle = fmBackStyleTransparent
-    
+ 
     For i = 1 To 5
         With frm.Controls("Label" & i)
             .BackStyle = fmBackStyleTransparent
@@ -32,6 +31,12 @@ Sub stylefrmMain(frm As UserForm)
     
     With frm.Controls("btnGenerateExcel")
         .BackColor = vbWhite
+    End With
+    
+    With frm.Controls("lblContactame")
+        .Font.Underline = True
+        .ControlTipText = "Desarrollado por: Jhony Escriba " & vbCrLf & " Correo :jhonny14_1@hotmail.com"
+        .BackStyle = fmBackStyleTransparent
     End With
     
 End Sub

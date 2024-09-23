@@ -9,6 +9,13 @@ Private Const BAJA As String = "baja"
 Private Const MEDIA As String = "media"
 Private Const CUENTAS As String = "cuentas"
 
+Public Enum status
+    OK = 1
+    LOADING = 2
+    FAIL = 3
+    STANDAR = 4
+End Enum
+
 Function getFeshness(channel As String) As String
     ' Descripción:
     '   Se encarga de recuperar la frescura recibiendo el canal de despacho.
@@ -104,6 +111,7 @@ Function selectFileXlsx() As String
     
 End Function
 Sub addNewSheet()
+
     Dim ws As Worksheet
     Dim sheetName As String
     Dim count As Integer
@@ -116,7 +124,7 @@ Sub addNewSheet()
         sheetName = "licuad" & count
         sheetExists = False
         
-        For Each ws In ThisWorkbook.Sheets
+        For Each ws In ActiveWorkbook.Sheets
             If ws.name = sheetName Then
                 sheetExists = True
                 Exit For
@@ -128,9 +136,51 @@ Sub addNewSheet()
         End If
     Loop
     
-    Set ws = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.count))
+    Set ws = ActiveWorkbook.Sheets.Add(After:=Sheets(ActiveWorkbook.Sheets.count))
     ws.name = sheetName
     
 End Sub
+Sub setStatusInLbl(lbl As MSForms.Label, status As status)
+    
+    Select Case status
+        Case Is = 1
+            lbl.BackColor = vbGreen
+        Case Is = 2
+            lbl.BackColor = vbYellow
+        Case Is = 3
+            lbl.BackColor = vbRed
+        Case Is = 2
+            lbl.BackColor = vbGrayText
+        Case Else
+            lbl.BackColor = vbWhite
+    End Select
+End Sub
+Sub printListProducts(listProductByPicking As Collection)
+    
+    Dim i As Integer
+    Dim p As New ProductGeneralStock
+    
+    Cells(1, 1).value = "SKU"
+    Cells(1, 2).value = "DESCRIPCION"
+    Cells(1, 3).value = "LPN"
+    Cells(1, 4).value = "VTO"
+    Cells(1, 5).value = "UBICACION"
+    Cells(1, 6).value = "CANTIDAD"
+    Cells(1, 7).value = "CANAL"
+    Cells(1, 8).value = "TOTAL_POR_CANAL"
 
+    i = 2
+    For Each p In listProductByPicking
+        Cells(i, 1).value = p.sku
+        Cells(i, 2).value = p.description
+        Cells(i, 3).value = "'" & p.LPN
+        Cells(i, 4).value = p.vto
+        Cells(i, 5).value = p.ubication
+        Cells(i, 6).value = p.amount
+        Cells(i, 7).value = p.channel
+        Cells(i, 8).value = p.total
+        i = i + 1
+    Next p
+    
+End Sub
 

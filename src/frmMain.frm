@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmMain 
    Caption         =   "UserForm1"
-   ClientHeight    =   5835
+   ClientHeight    =   6030
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   5445
@@ -46,10 +46,17 @@ Private Sub btnGenerateExcel_Click()
             Exit Sub
         End If
     
-        lblStatusProcess.Caption = "Espere estoy generando la lista"
+        lblStatusProcess.Caption = vbTab & "Espere estoy generando la lista"
+        Call setStatusInLbl(lblStatusProcess, LOADING)
+        
         Application.Wait Now() + TimeValue("00:00:01")
         Call Index.main(ddbbStock, ddbbShitmenpLine)
-        lblStatusProcess.Caption = "Lista generada"
+        
+        lblStatusProcess.Caption = vbTab & "Lista generada"
+        Call setStatusInLbl(Me.lblStatusProcess, OK)
+        
+        Application.Wait Now() + TimeValue("00:00:02")
+        Unload Me
         
     Else
         MsgBox "Asegure que las rutas sean correctas", vbExclamation, "Archivo no encontrado."
@@ -58,21 +65,27 @@ Private Sub btnGenerateExcel_Click()
     Exit Sub
 Catch:
 
-    lblStatusProcess.Caption = "Opps, hubo un error"
+    lblStatusProcess.Caption = vbTab & "Opps, hubo un error"
+    Call setStatusInLbl(lblStatusProcess, FAIL)
     MsgBox Err.description, vbCritical, Err.Number
     
+End Sub
+
+Private Sub lblContactame_Click()
+    Shell "outlook.exe", vbHide
 End Sub
 
 Private Sub UserForm_Initialize()
 
     Me.Caption = "Generar lista de licuado"
     Me.frameMain.Caption = Empty
-    Me.lblStatusProcess.Caption = Now()
+    Me.lblStatusProcess.Caption = vbTab & Now()
     
     txtPathExcelShipmentLine.Locked = True
     txtPathExcelStock.Locked = True
     
     Call style.stylefrmMain(Me)
     Call utils.addNewSheet
+    Call setStatusInLbl(lblStatusProcess, STANDAR)
 
 End Sub

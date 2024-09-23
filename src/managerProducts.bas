@@ -33,6 +33,7 @@ Function productsInStock2(rs As ADODB.Recordset) As Collection
                 p.LPN = .fields("LPN").value
                 p.amount = .fields("cantidad").value
                 p.ubication = .fields("ubicación").value
+                p.vto = .fields("vto").value
                 products.Add p
                 .MoveNext
             Loop
@@ -54,10 +55,10 @@ Function productsInStock(rs As ADODB.Recordset) As Collection
     '
     ' Retorno:
     '   Collection - Una colección de objetos ProductGeneralStock que representan los productos en stock.
-    
+
     Dim products As New Collection
     Dim p As ProductGeneralStock
-    
+
     With rs
         If Not (.EOF) And Not (.BOF) Then
             .MoveFirst
@@ -71,7 +72,7 @@ Function productsInStock(rs As ADODB.Recordset) As Collection
             Loop
         End If
     End With
-    
+
     Set productsInStock = products
 
 End Function
@@ -262,11 +263,15 @@ Function getListPiking(shipmentInStock As Collection, ddbbStock As String) As Co
             If tmpProduct.count > 0 Then
                 For Each p In tmpProduct
                     If totalFount <= total Then
-                        totalFount = totalFount + p.amount
+                        
                         If Not LPNs.Exists(p.LPN) Then
+                        
+                            totalFount = totalFount + p.amount
+                            
                             LPNs.Add p.LPN, True
                             p.channel = product.channel
                             p.total = product.total
+                            
                             listProductByPicking.Add p
                         End If
                     Else
@@ -282,13 +287,4 @@ Function getListPiking(shipmentInStock As Collection, ddbbStock As String) As Co
     
     Set getListPiking = listProductByPicking
        
-'    i = 1
-'    For Each p In listProductByPicking
-'        Cells(i, 1).value = p.sku
-'        Cells(i, 2).value = p.description
-'        Cells(i, 3).value = "'" & p.LPN
-'        Cells(i, 4).value = p.ubication
-'        Cells(i, 5).value = p.amount
-'        i = i + 1
-'    Next p
 End Function
